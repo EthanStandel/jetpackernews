@@ -28,15 +28,16 @@ fun StoryCard(story: Story?) {
             modifier = Modifier
                 .padding(16.dp)
         ) {
-            if (story != null) {
-                Text(text = story.title)
-                Row (
-                    modifier = Modifier.padding(top = 8.dp)
+            Text(text = story?.title ?: "...")
+            Row (
+                modifier = Modifier.padding(top = 8.dp)
+            ) {
+                Column(modifier = Modifier.weight(1f)) {}
+                Button(
+                    onClick = { uriHandler.openUri(story?.url ?: "") },
+                    enabled = story != null
                 ) {
-                    Column(modifier = Modifier.weight(1f)) {}
-                    Button(onClick = { uriHandler.openUri(story.url) }) {
-                        Text(text = "Open story")
-                    }
+                    Text(text = "Open story")
                 }
             }
         }
