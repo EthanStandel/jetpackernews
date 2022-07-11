@@ -9,15 +9,25 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
+import io.standel.jetpackernews.clients.fetchStory
 import io.standel.jetpackernews.models.Story
+
+val storyStore = mutableMapOf<Int, Story>()
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StoryCard(story: Story?) {
+fun StoryCard(id: Int) {
     val uriHandler = LocalUriHandler.current
+    val story = produceState<Story?>(null, id) {
+        if (!storyStore.containsKey(id)) {
+            storyStore[id] = fetchStory(id)
+        }
+        value = storyStore[id]
+    }.value
 
     ElevatedCard(
         modifier = Modifier
