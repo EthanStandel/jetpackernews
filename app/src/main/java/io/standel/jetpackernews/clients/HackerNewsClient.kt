@@ -18,8 +18,8 @@ private val gson = Gson()
 private val client = HttpClient()
 private val baseUrl =  "https://hacker-news.firebaseio.com/v0"
 
-suspend fun fetchStoryIds(): List<Int> {
-    val body: String = client.get("$baseUrl/topstories.json").body()
+suspend fun fetchStoryIds(queryType: String): List<Int> {
+    val body: String = client.get(baseUrl + queryType).body()
     return gson.fromJson(body, Array<Int>::class.java).toList()
 }
 

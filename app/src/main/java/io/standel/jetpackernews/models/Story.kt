@@ -8,11 +8,11 @@ data class Story(
     val deleted: Boolean,
     val type: String,
     val by: String,
-    val time: Int,
+    val time: Long,
     val dead: Boolean,
-    val kids: List<Int>,
+    val kids: List<Int>?,
     val descendants: Int,
     val score: Int,
     val title: String,
-    val url: String
+    val url: String?
 )
