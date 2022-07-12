@@ -3,7 +3,9 @@ package io.standel.jetpackernews.models
 import kotlinx.serialization.Serializable
 
 // https://hackernews.api-docs.io/v0/items/story
-data class Story(
+// https://hackernews.api-docs.io/v0/items/comment
+// Don't judge me for how weird the idea of this model is...
+data class StoryOrComment(
     val id: Int,
     val deleted: Boolean,
     val type: String,
@@ -11,8 +13,14 @@ data class Story(
     val time: Long,
     val dead: Boolean,
     val kids: List<Int>?,
+    val title: String,
+
+    // story specific
     val descendants: Int,
     val score: Int,
-    val title: String,
-    val url: String?
+    val url: String?,
+
+    // comment specific
+    val parent: Int?,
+    val text: String?
 )

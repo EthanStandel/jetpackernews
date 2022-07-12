@@ -23,7 +23,7 @@ class StoryFetching : ViewModel() {
         viewModelScope.launch {
             isRefreshingState.emit(true)
             storyIdsState.emit(listOf())
-            storyStore.clear()
+            itemStore.clear()
             updateStoryIds()
             isRefreshingState.emit(false)
         }

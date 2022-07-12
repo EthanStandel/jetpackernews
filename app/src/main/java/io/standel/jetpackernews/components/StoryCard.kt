@@ -1,34 +1,23 @@
 package io.standel.jetpackernews.components
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.standel.jetpackernews.clients.fetchStory
-import io.standel.jetpackernews.models.Story
-import io.standel.jetpackernews.state.storyStore
+import androidx.navigation.NavOptions
+import io.standel.jetpackernews.state.LocalStackNavState
+import io.standel.jetpackernews.state.produceItemState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StoryCard(id: Int) {
+    val stackNav = LocalStackNavState.current!!
     val uriHandler = LocalUriHandler.current
-    val story = produceState<Story?>(null, id) {
-        if (!storyStore.containsKey(id)) {
-            storyStore[id] = fetchStory(id)
-        }
-        value = storyStore[id]
-    }.value
+    val story = produceItemState(id)
 
     ElevatedCard(
         modifier = Modifier
@@ -54,20 +43,22 @@ fun StoryCard(id: Int) {
             )
             Row (
                 modifier = Modifier.padding(top = 8.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
             ) {
-                Column(modifier = Modifier.weight(1f)) {}
                 Button(
                     onClick = {
-
+                        stackNav.navigate(
+                            "comments/${story?.id}",
+                            NavOptions.Builder().setRestoreState(true).build()
+                        )
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary,
                         contentColor = MaterialTheme.colorScheme.onSecondary
                     ),
                     enabled = story != null
-                ) {
-                    Text(text = "View comments")
-                }
+                ) { Text(text = "View comments") }
                 Button(
                     modifier = Modifier.padding(start = 8.dp),
                     onClick = {
@@ -77,9 +68,7 @@ fun StoryCard(id: Int) {
                         )
                     },
                     enabled = story != null
-                ) {
-                Text(text = "View story")
-            }
+                ) { Text(text = "View story") }
             }
         }
     }
