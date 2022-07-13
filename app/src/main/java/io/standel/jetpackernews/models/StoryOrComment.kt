@@ -7,7 +7,7 @@ data class StoryOrComment(
     val id: Int,
     val deleted: Boolean,
     val type: String,
-    val by: String,
+    val by: String?,
     val time: Long,
     val dead: Boolean,
     val kids: List<Int>?,
