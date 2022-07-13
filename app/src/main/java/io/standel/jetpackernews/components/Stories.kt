@@ -16,22 +16,15 @@ import io.standel.jetpackernews.state.StoryFetching
 
 @Composable
 fun Stories() {
-    val viewModel: StoryFetching = viewModel()
-    val isRefreshing by viewModel.isRefreshingState.collectAsState()
-    val storyIds by viewModel.storyIdsState.collectAsState()
-    val (navState, setNavState) = remember { mutableStateOf(bottomNavItems[0]) }
-
-    LaunchedEffect(navState) {
-        viewModel.navState.emit(navState)
-        viewModel.storyIdsState.emit(listOf())
-        viewModel.updateStoryIds()
-    }
+    val storyFetching: StoryFetching = viewModel()
+    val isRefreshing by storyFetching.isRefreshingState.collectAsState()
+    val storyIds by storyFetching.storyIdsState.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.weight(1f)) {
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing),
-                onRefresh = { viewModel.refresh() },
+                onRefresh = { storyFetching.refresh() },
                 indicator = { state, trigger ->
                     SwipeRefreshIndicator(
                         state = state,
@@ -55,6 +48,6 @@ fun Stories() {
                 } else LazyColumn { items(storyIds) { StoryCard(it) } }
             }
         }
-        BottomNav(navState, setNavState)
+        BottomNav(storyFetching)
     }
 }

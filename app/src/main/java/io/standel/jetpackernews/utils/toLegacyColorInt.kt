@@ -19,9 +19,9 @@ import kotlin.math.pow
  * and then reconverted back to an int. Not a single one of
  * these items can be removed to reliably get the same result.
  */
-fun convertToLegacyColor(color: Color) = abs(
-    + (color.alpha * 255 * 256f.pow(3)).toLong()
-    + (color.red * 255 * 256f.pow(2)).toInt()
-    + (color.green * 255 * 256).toInt()
-    + (color.blue * 255).toInt()
+fun Color.toLegacyColorInt() = abs(
+    + (alpha * 255 * 256f.pow(3)).toLong()
+    + (red * 255 * 256f.pow(2)).toInt()
+    + (green * 255 * 256).toInt()
+    + (blue * 255).toInt()
 ).toInt()
