@@ -1,7 +1,5 @@
 package io.standel.jetpackernews.models
 
-import kotlinx.serialization.Serializable
-
 // https://hackernews.api-docs.io/v0/items/story
 // https://hackernews.api-docs.io/v0/items/comment
 // Don't judge me for how weird the idea of this model is...

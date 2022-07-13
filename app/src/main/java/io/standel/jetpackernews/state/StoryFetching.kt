@@ -2,12 +2,10 @@ package io.standel.jetpackernews.state
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import io.standel.jetpackernews.clients.fetchStoryIds
 import io.standel.jetpackernews.components.bottomNavItems
 import io.standel.jetpackernews.models.NavItem
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class StoryFetching : ViewModel() {
@@ -29,23 +27,20 @@ class StoryFetching : ViewModel() {
         }
     }
 
-    fun changeBottomNavState(navItem: NavItem) {
-        viewModelScope.launch {
-            bottomNavState.emit(navItem)
-            storyIdsState.emit(listOf())
-            updateStoryIds()
-        }
-
+    fun changeBottomNavState(navItem: NavItem) = viewModelScope.launch {
+        bottomNavState.emit(navItem)
+        storyIdsState.emit(listOf())
+        updateStoryIds()
     }
 
-    fun refresh() {
-        viewModelScope.launch {
-            isRefreshingState.emit(true)
-            storyIdsState.emit(listOf())
-            itemStore.clear()
-            queryStore.remove(bottomNavState.value.queryType)
-            updateStoryIds()
-            isRefreshingState.emit(false)
-        }
+
+    fun refresh() = viewModelScope.launch {
+        isRefreshingState.emit(true)
+        storyIdsState.emit(listOf())
+        itemStore.clear()
+        queryStore.remove(bottomNavState.value.queryType)
+        updateStoryIds()
+        isRefreshingState.emit(false)
     }
+
 }

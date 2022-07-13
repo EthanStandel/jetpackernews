@@ -7,7 +7,6 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.lifecycle.viewmodel.compose.viewModel
 import io.standel.jetpackernews.models.NavItem
 import io.standel.jetpackernews.models.QueryType
 import io.standel.jetpackernews.state.StoryFetching
