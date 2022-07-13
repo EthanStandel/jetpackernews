@@ -1,5 +1,6 @@
 package io.standel.jetpackernews.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,7 +21,10 @@ fun Stories() {
     val isRefreshing by storyFetching.isRefreshingState.collectAsState()
     val storyIds by storyFetching.storyIdsState.collectAsState()
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier.fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
         Column(modifier = Modifier.weight(1f)) {
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing),

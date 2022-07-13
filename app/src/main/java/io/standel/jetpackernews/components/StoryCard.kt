@@ -14,7 +14,7 @@ import io.standel.jetpackernews.state.produceItemState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StoryCard(id: Int) {
+fun StoryCard(id: Int, showCommentLink: Boolean = true) {
     val stackNav = LocalStackNavState.current!!
     val uriHandler = LocalUriHandler.current
     val story = produceItemState(id)
@@ -46,10 +46,10 @@ fun StoryCard(id: Int) {
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.End
             ) {
-                Button(
+                if (showCommentLink) Button(
                     onClick = {
                         stackNav.navigate(
-                            "comments/${story?.id}",
+                            "comments/${story?.id}/${story?.id}",
                             NavOptions.Builder().setRestoreState(true).build()
                         )
                     },
@@ -68,7 +68,7 @@ fun StoryCard(id: Int) {
                         )
                     },
                     enabled = story != null
-                ) { Text(text = "View story") }
+                ) { Text(text = "Read story") }
             }
         }
     }

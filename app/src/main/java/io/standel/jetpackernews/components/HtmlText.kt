@@ -8,16 +8,16 @@ import androidx.core.text.HtmlCompat
 import io.standel.jetpackernews.utils.toLegacyColorInt
 
 @Composable
-fun HtmlText(text: String) {
+fun HtmlText(html: String) {
     val textColor = MaterialTheme.colorScheme.onBackground
 
     AndroidView(
         factory = { context ->
             TextView(context).apply {
                 setTextColor(textColor.toLegacyColorInt())
-                setText(HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY))
+                text = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY)
             }
         },
-        update = { it.text = HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_LEGACY) },
+        update = { it.text = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY) },
     )
 }
