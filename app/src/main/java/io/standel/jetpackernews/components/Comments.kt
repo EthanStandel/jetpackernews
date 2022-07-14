@@ -19,8 +19,6 @@ import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import io.standel.jetpackernews.state.CommentRefreshViewModel
 import io.standel.jetpackernews.state.CommentRefreshViewModelFactory
-import io.standel.jetpackernews.state.produceItemState
-import kotlinx.coroutines.flow.asStateFlow
 
 @Composable
 fun Comments(storyId: Int, itemId: Int) {

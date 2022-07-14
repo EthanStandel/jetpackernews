@@ -13,9 +13,7 @@ class StoryRefreshViewModel : ViewModel() {
     val isRefreshingState = MutableStateFlow(false)
     val bottomNavState = MutableStateFlow(bottomNavItems[0])
 
-    init {
-        viewModelScope.launch { updateStoryIds() }
-    }
+    init { viewModelScope.launch { updateStoryIds() } }
 
     private suspend fun updateStoryIds() {
         if (queryStore[bottomNavState.value.queryType] == null) {
@@ -42,5 +40,4 @@ class StoryRefreshViewModel : ViewModel() {
         updateStoryIds()
         isRefreshingState.emit(false)
     }
-
 }

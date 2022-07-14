@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
@@ -21,13 +20,6 @@ fun Stories() {
     val storyRefreshing: StoryRefreshViewModel = viewModel()
     val isRefreshing by storyRefreshing.isRefreshingState.collectAsState()
     val storyIds by storyRefreshing.storyIdsState.collectAsState()
-    val bottomNavState by storyRefreshing.bottomNavState.collectAsState()
-    val scrollState = rememberLazyListState()
-
-    // Reset scroll state when other bottom nav-item (queryType) is selected
-    LaunchedEffect(bottomNavState) {
-        scrollState.scrollToItem(0)
-    }
 
     Column(
         modifier = Modifier
@@ -58,7 +50,7 @@ fun Stories() {
                                 .padding(16.dp)
                         )
                     }
-                } else LazyColumn(state = scrollState) { items(storyIds) { StoryCard(it) } }
+                } else LazyColumn { items(storyIds) { StoryCard(it) } }
             }
         }
         BottomNav(storyRefreshing)
