@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import io.standel.jetpackernews.models.NavItem
 import io.standel.jetpackernews.models.QueryType
-import io.standel.jetpackernews.state.StoryFetching
+import io.standel.jetpackernews.state.StoryRefreshViewModel
 
 val bottomNavItems = listOf(
     NavItem(Icons.Filled.Star, "Top", QueryType.Top),
@@ -20,8 +20,8 @@ val bottomNavItems = listOf(
 )
 
 @Composable
-fun BottomNav(storyFetching: StoryFetching) {
-    val bottomNavState = storyFetching.bottomNavState.collectAsState().value
+fun BottomNav(storyRefreshing: StoryRefreshViewModel) {
+    val bottomNavState = storyRefreshing.bottomNavState.collectAsState().value
 
     NavigationBar {
         bottomNavItems.forEach { navItem ->
@@ -29,7 +29,7 @@ fun BottomNav(storyFetching: StoryFetching) {
                 icon = { Icon(navItem.icon, contentDescription = navItem.text)},
                 label = { Text(navItem.text) },
                 selected = bottomNavState === navItem,
-                onClick = { storyFetching.changeBottomNavState(navItem) }
+                onClick = { storyRefreshing.changeBottomNavState(navItem) }
             )
         }
     }

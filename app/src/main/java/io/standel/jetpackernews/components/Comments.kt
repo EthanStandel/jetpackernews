@@ -8,14 +8,27 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import io.standel.jetpackernews.state.CommentRefreshViewModel
+import io.standel.jetpackernews.state.CommentRefreshViewModelFactory
 import io.standel.jetpackernews.state.produceItemState
+import kotlinx.coroutines.flow.asStateFlow
 
 @Composable
 fun Comments(storyId: Int, itemId: Int) {
-    val commentGroupParent = produceItemState(itemId)
+    val commentRefresh: CommentRefreshViewModel = viewModel(
+        factory = CommentRefreshViewModelFactory(itemId)
+    )
+    val commentGroupParent = commentRefresh.commentGroupParent.collectAsState().value
+    val commentsRefreshing by commentRefresh.isRefreshingState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -33,7 +46,7 @@ fun Comments(storyId: Int, itemId: Int) {
                         .padding(16.dp)
                 )
             }
-        } else if ((commentGroupParent.kids ?: listOf()).isEmpty()) {
+        } else if ((commentGroupParent!!.kids ?: listOf()).isEmpty()) {
             Column(
                 modifier = Modifier.fillMaxHeight(),
                 verticalArrangement = Arrangement.Center
@@ -44,7 +57,18 @@ fun Comments(storyId: Int, itemId: Int) {
                 ) { Text("No comments", modifier = Modifier) }
             }
         } else {
-            Column {
+            SwipeRefresh(
+                state = rememberSwipeRefreshState(commentsRefreshing),
+                onRefresh = { commentRefresh.refresh() },
+                indicator = { state, trigger ->
+                    SwipeRefreshIndicator(
+                        state = state,
+                        refreshTriggerDistance = trigger,
+                        backgroundColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            ) {
                 LazyColumn {
                     item { StoryCard(storyId, false) }
                     item {

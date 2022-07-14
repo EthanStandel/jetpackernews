@@ -8,7 +8,7 @@ import io.standel.jetpackernews.models.NavItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class StoryFetching : ViewModel() {
+class StoryRefreshViewModel : ViewModel() {
     val storyIdsState = MutableStateFlow<List<Int>>(listOf())
     val isRefreshingState = MutableStateFlow(false)
     val bottomNavState = MutableStateFlow(bottomNavItems[0])

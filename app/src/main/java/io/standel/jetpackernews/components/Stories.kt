@@ -14,14 +14,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import io.standel.jetpackernews.state.StoryFetching
+import io.standel.jetpackernews.state.StoryRefreshViewModel
 
 @Composable
 fun Stories() {
-    val storyFetching: StoryFetching = viewModel()
-    val isRefreshing by storyFetching.isRefreshingState.collectAsState()
-    val storyIds by storyFetching.storyIdsState.collectAsState()
-    val bottomNavState by storyFetching.bottomNavState.collectAsState()
+    val storyRefreshing: StoryRefreshViewModel = viewModel()
+    val isRefreshing by storyRefreshing.isRefreshingState.collectAsState()
+    val storyIds by storyRefreshing.storyIdsState.collectAsState()
+    val bottomNavState by storyRefreshing.bottomNavState.collectAsState()
     val scrollState = rememberLazyListState()
 
     // Reset scroll state when other bottom nav-item (queryType) is selected
@@ -37,7 +37,7 @@ fun Stories() {
         Column(modifier = Modifier.weight(1f)) {
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing),
-                onRefresh = { storyFetching.refresh() },
+                onRefresh = { storyRefreshing.refresh() },
                 indicator = { state, trigger ->
                     SwipeRefreshIndicator(
                         state = state,
@@ -61,6 +61,6 @@ fun Stories() {
                 } else LazyColumn(state = scrollState) { items(storyIds) { StoryCard(it) } }
             }
         }
-        BottomNav(storyFetching)
+        BottomNav(storyRefreshing)
     }
 }
