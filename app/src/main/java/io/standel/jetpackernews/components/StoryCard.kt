@@ -35,11 +35,16 @@ fun StoryCard(id: Int, showCommentLink: Boolean = true) {
             )
             val score = if (story?.score != null) "${story.score} points " else ""
             val author = if (story?.by != null) "by ${story.by} " else ""
-            val comments = if (story?.kids?.size != null) "| ${story.kids.size} comments " else ""
+            val domain =
+                if (story?.url != null)
+                    "| ${story.url.split("://")[1].split("/")[0]} "
+                else
+                    ""
             Text(
-                text = score + author + comments,
+                text = score + author + domain,
                 fontSize = 12.sp,
-                modifier = Modifier.padding(top = 8.dp)
+                lineHeight = 16.sp,
+                modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
             )
             Row (
                 modifier = Modifier.padding(top = 8.dp)
@@ -47,26 +52,21 @@ fun StoryCard(id: Int, showCommentLink: Boolean = true) {
                 horizontalArrangement = Arrangement.End
             ) {
                 if (showCommentLink) Button(
-                    onClick = {
-                        stackNav.navigate(
-                            "comments/${story?.id}/${story?.id}",
-                            NavOptions.Builder().setRestoreState(true).build()
-                        )
-                    },
+                    onClick = { stackNav.navigate(
+                        "comments/${story?.id}/${story?.id}",
+                        NavOptions.Builder().setRestoreState(true).build()
+                    ) },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.secondary,
                         contentColor = MaterialTheme.colorScheme.onSecondary
                     ),
                     enabled = story != null
-                ) { Text(text = "View comments") }
+                ) { Text(text = "View ${story?.kids?.size ?: 0} comments") }
                 Button(
                     modifier = Modifier.padding(start = 8.dp),
-                    onClick = {
-                        uriHandler.openUri(
-                            story?.url
-                                ?: "https://news.ycombinator.com/item?id=${story?.id}"
-                        )
-                    },
+                    onClick = { uriHandler.openUri(
+                        story?.url ?: "https://news.ycombinator.com/item?id=${story?.id}"
+                    ) },
                     enabled = story != null
                 ) { Text(text = "Read story") }
             }

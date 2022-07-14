@@ -21,14 +21,14 @@ val bottomNavItems = listOf(
 
 @Composable
 fun BottomNav(storyFetching: StoryFetching) {
-    val bottomNavState = storyFetching.bottomNavState.collectAsState()
+    val bottomNavState = storyFetching.bottomNavState.collectAsState().value
 
     NavigationBar {
         bottomNavItems.forEach { navItem ->
             NavigationBarItem(
                 icon = { Icon(navItem.icon, contentDescription = navItem.text)},
                 label = { Text(navItem.text) },
-                selected = bottomNavState.value === navItem,
+                selected = bottomNavState === navItem,
                 onClick = { storyFetching.changeBottomNavState(navItem) }
             )
         }
